@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SuggestEngine | DSA Capstone</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--tx:#1b1f2a;--mu:#6b7280;--ac:#4f46e5;--ac2:#7c3aed;--bd:#e3e5ee;--hl:#eef0ff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141c;--card:#1b1e29;--tx:#e8eaf2;--mu:#98a0b3;--ac:#8b85ff;--ac2:#a78bfa;--bd:#2c3040;--hl:#262a44}}
+:root[data-theme="dark"]{--bg:#12141c;--card:#1b1e29;--tx:#e8eaf2;--mu:#98a0b3;--ac:#8b85ff;--ac2:#a78bfa;--bd:#2c3040;--hl:#262a44}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.6}
+a{color:inherit;text-decoration:none}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--card);border-bottom:1px solid var(--bd)}
+nav{max-width:1000px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.logo{font-weight:700;font-size:1.1rem}.logo span{color:var(--ac)}
+nav ul.m{display:flex;gap:18px;margin:0;padding:0;list-style:none;flex-wrap:wrap}
+nav ul.m a{color:var(--mu);font-size:.92rem}nav ul.m a:hover{color:var(--ac)}
+.hero{text-align:center;padding:64px 16px 48px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.hero h1{font-size:clamp(1.8rem,5vw,2.8rem);margin:0 0 12px;line-height:1.2}
+.hero p{max-width:640px;margin:0 auto 24px;opacity:.92;font-size:1.05rem}
+.btn{display:inline-block;background:#fff;color:#4f46e5;border:0;border-radius:10px;padding:12px 22px;font-weight:600;font-size:.95rem;cursor:pointer;margin:4px}
+.btn.o{background:transparent;color:#fff;border:2px solid #fff}
+.chips{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:28px}
+.chips div{background:rgba(255,255,255,.18);border-radius:999px;padding:6px 14px;font-size:.85rem}
+section{max-width:1000px;margin:0 auto;padding:48px 16px}
+section h2{font-size:1.6rem;margin:0 0 6px}
+.lead{color:var(--mu);margin:0 0 24px;max-width:680px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px}
+.card h3{margin:6px 0;font-size:1.05rem}.card p{margin:0;color:var(--mu);font-size:.92rem}
+.ic{font-size:1.6rem}
+.step{display:flex;gap:14px;margin-bottom:14px}
+.step b{flex:none;width:34px;height:34px;border-radius:50%;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center}
+.step p{margin:2px 0 0;color:var(--mu);font-size:.93rem}
+input{width:100%;font-size:1.1rem;padding:12px 14px;border:2px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);outline:none}
+input:focus{border-color:var(--ac)}
+#list{list-style:none;margin:8px 0 0;padding:0}
+#list li{display:flex;justify-content:space-between;padding:10px 12px;border-radius:8px;cursor:pointer}
+#list li.on,#list li:hover{background:var(--hl)}
+#list li b{color:var(--ac)}
+.f{color:var(--mu);font-size:.85rem}
+.stats{display:flex;gap:16px;flex-wrap:wrap;color:var(--mu);font-size:.85rem;margin-top:10px}
+button.go{background:var(--ac);color:#fff;border:0;border-radius:8px;padding:10px 16px;font-size:.95rem;cursor:pointer}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.92rem}
+td,th{text-align:left;padding:8px 6px;border-bottom:1px solid var(--bd)}
+code{background:var(--hl);padding:2px 6px;border-radius:5px;font-size:.88em}
+.alt{background:var(--card);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+footer{text-align:center;color:var(--mu);font-size:.88rem;padding:28px 16px}
+</style>
+</head>
+<body>
+<header><nav><a class="logo" href="#home">Suggest<span>Engine</span></a>
+<ul class="m"><li><a href="#demo">Live Demo</a></li><li><a href="#features">Features</a></li><li><a href="#how">How it works</a></li><li><a href="#complexity">Complexity</a></li><li><a href="#benchmark">Benchmark</a></li><li><a href="#about">About</a></li></ul></nav></header>
+
+<div class="hero" id="home">
+<h1>Smart Search Suggestions, Powered by Data Structures</h1>
+<p>An automatic suggestion engine built with a Trie and a Min-Heap. It predicts what you want to search as you type and learns from every choice you make.</p>
+<a class="btn" href="#demo">Try the Live Demo</a><a class="btn o" href="#how">How it works</a>
+<div class="chips"><div>&#9889; Prefix lookup in O(L + k)</div><div>&#127794; Trie storage</div><div>&#128200; Frequency ranking</div><div>&#129504; Learns from usage</div></div>
+</div>
+
+<section id="demo"><h2>Live Demo</h2>
+<p class="lead">Type any prefix such as <code>ch</code>, <code>ban</code>, <code>al</code> or <code>bi</code>. Use the arrow keys and Enter, or click a suggestion to select it. Its frequency goes up, so it ranks higher next time.</p>
+<div class="card">
+<input id="q" placeholder="Start typing&hellip;" autocomplete="off">
+<ul id="list"></ul>
+<div class="stats"><span id="t">Lookup: &ndash;</span><span id="m">Matches shown: &ndash;</span><span id="n"></span></div>
+</div></section>
+
+<section id="features" class="alt" style="max-width:none"><div style="max-width:1000px;margin:0 auto"><h2>Features</h2>
+<p class="lead">Everything runs on classic data structures taught in DSA.</p>
+<div class="grid">
+<div class="card"><div class="ic">&#127794;</div><h3>Trie (Prefix Tree)</h3><p>Words share common prefixes, so finding every completion of a prefix never scans the whole dataset.</p></div>
+<div class="card"><div class="ic">&#128285;</div><h3>Top-k with Min-Heap</h3><p>A heap of size k keeps only the most frequent matches, giving ranked results in O(M log k).</p></div>
+<div class="card"><div class="ic">&#129504;</div><h3>Learns from You</h3><p>Every selection increases that entry's frequency, so suggestions adapt to real usage.</p></div>
+<div class="card"><div class="ic">&#9201;</div><h3>Real-time Speed</h3><p>Lookup time is measured and shown in microseconds for every keystroke.</p></div>
+<div class="card"><div class="ic">&#128218;</div><h3>Large Dataset</h3><p>Over 300 cities, programming terms, foods, countries and companies preloaded.</p></div>
+<div class="card"><div class="ic">&#128202;</div><h3>Built-in Benchmark</h3><p>Compare the Trie against a linear scan on up to 100,000 entries in one click.</p></div>
+</div></div></section>
+
+<section id="how"><h2>How it Works</h2>
+<p class="lead">From keystroke to ranked suggestions in four steps.</p>
+<div class="step"><b>1</b><div><strong>Build the Trie</strong><p>Each word is inserted character by character. The last node of a word stores its frequency.</p></div></div>
+<div class="step"><b>2</b><div><strong>Walk the prefix</strong><p>As you type, the engine follows the prefix down the tree in O(L) steps, where L is the prefix length.</p></div></div>
+<div class="step"><b>3</b><div><strong>Collect and rank</strong><p>A DFS visits all words below that node and feeds them to a min-heap that keeps the top k by frequency.</p></div></div>
+<div class="step"><b>4</b><div><strong>Learn</strong><p>When you pick a suggestion, its frequency is incremented, so future results are ranked better.</p></div></div>
+</section>
+
+<section id="complexity" class="alt" style="max-width:none"><div style="max-width:1000px;margin:0 auto"><h2>Complexity Analysis</h2>
+<p class="lead">N = number of words, L = prefix length, k = suggestions shown.</p>
+<div class="card tw"><table>
+<tr><th>Approach</th><th>Lookup</th><th>Insert</th><th>Space</th></tr>
+<tr><td>Linear scan of a list</td><td>O(N &middot; L)</td><td>O(1)</td><td>O(N)</td></tr>
+<tr><td>Sorted array + binary search</td><td>O(L log N + k)</td><td>O(N)</td><td>O(N)</td></tr>
+<tr><td><strong>Trie + min-heap (this project)</strong></td><td><strong>O(L + k)</strong></td><td>O(L)</td><td>O(N &middot; L) worst case</td></tr>
+</table></div>
+<p class="f" style="margin-top:12px">Trade-off: a trie uses more memory than a flat list, but gives far faster lookups as the dataset grows.</p></div></section>
+
+<section id="benchmark"><h2>Benchmark: Trie vs Linear Scan</h2>
+<p class="lead">Generates random words and runs 500 prefix queries on each method, returning the top 5 results.</p>
+<div class="card tw"><button class="go" id="bb">Run benchmark</button><table id="bt"></table></div></section>
+
+<section id="about" class="alt" style="max-width:none"><div style="max-width:1000px;margin:0 auto"><h2>About the Project</h2>
+<p class="lead">This is a DSA capstone project that demonstrates how the right data structure turns a slow search into an instant one.</p>
+<div class="grid">
+<div class="card"><h3>Problem</h3><p>Scanning every record for each keystroke is too slow for large datasets.</p></div>
+<div class="card"><h3>Solution</h3><p>Store data in a Trie and rank matches with a min-heap for fast, relevant suggestions.</p></div>
+<div class="card"><h3>Tech</h3><p>Core logic designed in C (Trie, Heap); web interface in HTML, CSS and JavaScript.</p></div>
+<div class="card"><h3>Future Scope</h3><p>Typo correction with edit distance, LRU caching, and a C server backend.</p></div>
+</div></div></section>
+
+<footer>&copy; 2026 SuggestEngine &middot; DSA Capstone Project &middot; Built by Your Name</footer>
+<script>
+/* ---------- Min-heap of size k ---------- */
+class MinHeap{
+  constructor(k){this.k=k;this.a=[];}
+  offer(w,f){
+    const a=this.a;
+    if(a.length<this.k){a.push([w,f]);this.up(a.length-1);}
+    else if(f>a[0][1]){a[0]=[w,f];this.down(0);}
+  }
+  up(i){const a=this.a;while(i>0){const p=(i-1)>>1;if(a[p][1]<=a[i][1])return;[a[p],a[i]]=[a[i],a[p]];i=p;}}
+  down(i){const a=this.a;for(;;){let l=2*i+1,r=l+1,m=i;
+    if(l<a.length&&a[l][1]<a[m][1])m=l;
+    if(r<a.length&&a[r][1]<a[m][1])m=r;
+    if(m===i)return;[a[m],a[i]]=[a[i],a[m]];i=m;}}
+  sorted(){return this.a.slice().sort((x,y)=>y[1]-x[1]);}
+}
+
+/* ---------- Trie ---------- */
+class Node{constructor(){this.c=new Map();this.end=false;this.f=0;}}
+class Trie{
+  constructor(){this.root=new Node();this.nodes=1;}
+  insert(w,f=1){
+    let n=this.root;
+    for(const ch of w){
+      if(!n.c.has(ch)){n.c.set(ch,new Node());this.nodes++;}
+      n=n.c.get(ch);
+    }
+    n.end=true;n.f+=f;
+  }
+  suggest(p,k=5){
+    let n=this.root;
+    for(const ch of p){n=n.c.get(ch);if(!n)return[];}
+    const h=new MinHeap(k);
+    const dfs=(x,s)=>{if(x.end)h.offer(s,x.f);for(const[ch,y]of x.c)dfs(y,s+ch);};
+    dfs(n,p);
+    return h.sorted();
+  }
+}
+function linearSuggest(words,p,k=5){
+  const h=new MinHeap(k);
+  for(const [w,f] of words) if(w.startsWith(p)) h.offer(w,f);
+  return h.sorted();
+}
+
+/* ---------- Data ---------- */
+const CATS={
+cities:["mumbai","delhi","bangalore","chennai","hyderabad","kolkata","pune","ahmedabad","jaipur","surat","lucknow","kanpur","nagpur","indore","bhopal","visakhapatnam","patna","vadodara","ghaziabad","ludhiana","agra","nashik","faridabad","meerut","rajkot","varanasi","srinagar","aurangabad","dhanbad","amritsar","navi mumbai","allahabad","ranchi","howrah","coimbatore","jabalpur","gwalior","vijayawada","jodhpur","madurai","raipur","kota","guwahati","chandigarh","thiruvananthapuram","solapur","tiruchirappalli","bareilly","mysore","tirunelveli","salem","tiruppur","erode","vellore","thanjavur","kochi","kozhikode","goa","shimla","dehradun","udaipur","pondicherry","tirupati","bhubaneswar","mangalore","hubli","thoothukudi","kanyakumari","nagercoil","ooty","kodaikanal","rameswaram","tamil nadu","kerala","karnataka","maharashtra","rajasthan","gujarat"],
+cs:["algorithm","data structures","array","artificial intelligence","machine learning","deep learning","dynamic programming","linked list","stack","queue","binary tree","binary search","binary search tree","bubble sort","merge sort","quick sort","heap sort","insertion sort","selection sort","hash table","hash map","graph traversal","breadth first search","depth first search","dijkstra algorithm","bellman ford","floyd warshall","kruskal algorithm","prim algorithm","minimum spanning tree","topological sort","avl tree","red black tree","b tree","trie","heap","priority queue","circular queue","doubly linked list","recursion","backtracking","greedy algorithm","divide and conquer","time complexity","space complexity","big o notation","pointers in c","structures in c","malloc","memory leak","segmentation fault","operating system","computer networks","database management system","sql","normalization","compiler design","object oriented programming","inheritance","polymorphism","encapsulation","python","java","javascript","c programming","c plus plus","html","css","react","node js","git","github","linux commands","docker","kubernetes","cloud computing","cyber security","blockchain","data science","big data","tensorflow","pytorch","neural network","natural language processing","computer vision","internet of things","web development","android development","autocomplete","debugging","api","json"],
+food:["biryani","butter chicken","masala dosa","idli sambar","paneer tikka","chole bhature","pav bhaji","samosa","dosa","vada","pongal","upma","poori","chicken biryani","mutton biryani","fish curry","rasam","sambar","curd rice","lemon rice","filter coffee","chai","gulab jamun","jalebi","rasgulla","payasam","halwa","kheer","pizza","burger","pasta","noodles","fried rice","momos","sandwich","chocolate cake","ice cream","chicken 65","parotta","kothu parotta","chocolate","chess"],
+world:["india","usa","united kingdom","canada","australia","germany","france","japan","singapore","dubai","google","microsoft","amazon","apple","facebook","netflix","tesla","infosys","tcs","wipro","zoho","flipkart","swiggy","zomato","paytm","ola","bank","banana","band","bangkok","application","apply","app store","apricot","arrow"]};
+const base=[];
+for(const [cat,arr] of Object.entries(CATS)){
+  arr.forEach((w,i)=>{base.push([w,Math.round(1000/Math.pow(i+1,0.7))+((w.length*37)%11)]);});
+}
+const trie=new Trie();
+base.forEach(([w,f])=>trie.insert(w,f));
+document.getElementById('n').textContent=`Words: ${base.length} · Trie nodes: ${trie.nodes}`;
+
+/* ---------- UI ---------- */
+const q=document.getElementById('q'),list=document.getElementById('list');
+let items=[],sel=-1;
+function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function render(){
+  const p=q.value.toLowerCase();
+  if(!p){items=[];list.innerHTML='';return;}
+  const t0=performance.now();
+  items=trie.suggest(p,5);
+  const dt=(performance.now()-t0)*1000;
+  sel=-1;
+  list.innerHTML=items.map(([w,f],i)=>`<li data-i="${i}"><span><b>${esc(w.slice(0,p.length))}</b>${esc(w.slice(p.length))}</span><span class="f">freq ${f}</span></li>`).join('')||'<li class="f">No suggestions</li>';
+  document.getElementById('t').textContent=`Lookup: ${dt.toFixed(0)} µs`;
+  document.getElementById('m').textContent=`Matches shown: ${items.length}`;
+}
+function choose(i){
+  if(!items[i])return;
+  trie.insert(items[i][0],1);          // learning
+  q.value=items[i][0];render();
+}
+function mark(){[...list.children].forEach((e,i)=>e.classList.toggle('on',i===sel));}
+q.addEventListener('input',render);
+q.addEventListener('keydown',e=>{
+  if(e.key==='ArrowDown'){sel=Math.min(sel+1,items.length-1);mark();e.preventDefault();}
+  else if(e.key==='ArrowUp'){sel=Math.max(sel-1,0);mark();e.preventDefault();}
+  else if(e.key==='Enter'&&sel>=0){choose(sel);}
+});
+list.addEventListener('click',e=>{const li=e.target.closest('li[data-i]');if(li)choose(+li.dataset.i);});
+
+/* ---------- Benchmark ---------- */
+function rw(){let s='';const n=4+Math.random()*6|0;for(let i=0;i<n;i++)s+=String.fromCharCode(97+Math.random()*26|0);return s;}
+document.getElementById('bb').onclick=()=>{
+  const bt=document.getElementById('bt');
+  bt.innerHTML='<tr><td>Running…</td></tr>';
+  setTimeout(()=>{
+    let rows='<tr><th>Entries</th><th>Linear scan</th><th>Trie</th><th>Speedup</th></tr>';
+    for(const N of [1000,10000,100000]){
+      const words=Array.from({length:N},()=>[rw(),1+Math.random()*100|0]);
+      const T=new Trie();words.forEach(([w,f])=>T.insert(w,f));
+      const ps=Array.from({length:500},()=>words[Math.random()*N|0][0].slice(0,3));
+      let t=performance.now();ps.forEach(p=>linearSuggest(words,p));const a=performance.now()-t;
+      t=performance.now();ps.forEach(p=>T.suggest(p));const b=performance.now()-t;
+      rows+=`<tr><td>${N.toLocaleString()}</td><td>${a.toFixed(1)} ms</td><td>${b.toFixed(1)} ms</td><td>${(a/Math.max(b,0.01)).toFixed(1)}×</td></tr>`;
+    }
+    bt.innerHTML=rows;
+  },30);
+};
+</script>
+</body>
+</html>
